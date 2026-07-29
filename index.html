@@ -111,7 +111,7 @@ fetch(url)
 
 document.getElementById("temperature").innerHTML = data.temperature + " °C";
 
-document.getElementById("pression").innerHTML = Math.round(data.pression) + " hPa";
+document.getElementById("pression").innerHTML = Number(data.pression).toFixed(1) + " hPa";
 
 document.getElementById("humidite").innerHTML = data.humidite + " %";
 
