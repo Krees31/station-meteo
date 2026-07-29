@@ -110,10 +110,32 @@ fetch(url)
 .then(data => {
 
 document.getElementById("temperature").innerHTML = data.temperature + " °C";
-document.getElementById("pression").innerHTML = data.pression + " hPa";
+document.getElementById("pression").innerHTML = Math.round(data.pression) + " hPa";
 document.getElementById("humidite").innerHTML = data.humidite + " %";
-document.getElementById("vent").innerHTML = data.vent + " km/h";
-document.getElementById("direction").innerHTML = data.direction;
+document.getElementById("vent").innerHTML = Math.round(data.vent) + " km/h";
+
+let degres = Math.round(data.direction);
+let directionTexte = "";
+
+if (degres >= 337.5 || degres < 22.5) {
+  directionTexte = "Nord";
+} else if (degres < 67.5) {
+  directionTexte = "Nord-Est";
+} else if (degres < 112.5) {
+  directionTexte = "Est";
+} else if (degres < 157.5) {
+  directionTexte = "Sud-Est";
+} else if (degres < 202.5) {
+  directionTexte = "Sud";
+} else if (degres < 247.5) {
+  directionTexte = "Sud-Ouest";
+} else if (degres < 292.5) {
+  directionTexte = "Ouest";
+} else {
+  directionTexte = "Nord-Ouest";
+}
+
+document.getElementById("direction").innerHTML = "↗ " + degres + "° (" + directionTexte + ")";
 document.getElementById("maj").innerHTML = "Dernière mise à jour : " + data.miseAJour;
 
 });
