@@ -110,9 +110,13 @@ fetch(url)
 .then(data => {
 
 document.getElementById("temperature").innerHTML = data.temperature + " °C";
+
 document.getElementById("pression").innerHTML = Math.round(data.pression) + " hPa";
+
 document.getElementById("humidite").innerHTML = data.humidite + " %";
+
 document.getElementById("vent").innerHTML = Math.round(data.vent) + " km/h";
+
 
 let degres = Math.round(data.direction);
 let directionTexte = "";
@@ -135,8 +139,12 @@ if (degres >= 337.5 || degres < 22.5) {
   directionTexte = "Nord-Ouest";
 }
 
-document.getElementById("direction").innerHTML = "↗ " + degres + "° (" + directionTexte + ")";
-document.getElementById("maj").innerHTML = "Dernière mise à jour : " + data.miseAJour;
+document.getElementById("direction").innerHTML =
+"↗ " + degres + "° (" + directionTexte + ")";
+
+
+document.getElementById("maj").innerHTML =
+"Dernière mise à jour : " + data.miseAJour;
 
 });
 
