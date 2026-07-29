@@ -1,10 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Station météo Francazal</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #101820;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.station {
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.temperature {
+  font-size: 90px;
+  font-weight: bold;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.carte {
+  background: #1c2b36;
+  border-radius: 15px;
+  padding: 20px;
+  font-size: 22px;
+}
+
+.label {
+  font-size: 16px;
+  color: #b0bec5;
+}
+
+.maj {
+  margin-top: 25px;
+  font-size: 16px;
+  color: #b0bec5;
+}
+</style>
+
 </head>
+
 <body>
+
+<div class="station">
+
 <h1>Station météo Francazal</h1>
-<p>Ma station météo fonctionne !</p>
+
+<div class="temperature" id="temperature">-- °C</div>
+
+<div class="info">
+
+<div class="carte">
+<div class="label">Pression</div>
+<div id="pression">-- hPa</div>
+</div>
+
+<div class="carte">
+<div class="label">Humidité</div>
+<div id="humidite">-- %</div>
+</div>
+
+<div class="carte">
+<div class="label">Vent</div>
+<div id="vent">-- km/h</div>
+</div>
+
+<div class="carte">
+<div class="label">Direction</div>
+<div id="direction">--</div>
+</div>
+
+</div>
+
+<div class="maj" id="maj">
+Dernière mise à jour : --
+</div>
+
+</div>
+
+
+<script>
+
+const url = "https://script.google.com/macros/s/AKfycbz6al08GPfgg99-xR18yNuG3wQ6kmABbMEJ7lhrld1g1JJUilkkYxrB3ry30UfQhn31Nw/exec";
+
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("temperature").innerHTML = data.temperature + " °C";
+document.getElementById("pression").innerHTML = data.pression + " hPa";
+document.getElementById("humidite").innerHTML = data.humidite + " %";
+document.getElementById("vent").innerHTML = data.vent + " km/h";
+document.getElementById("direction").innerHTML = data.direction;
+document.getElementById("maj").innerHTML = "Dernière mise à jour : " + data.miseAJour;
+
+});
+
+</script>
+
 </body>
 </html>
