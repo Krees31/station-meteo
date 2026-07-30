@@ -45,13 +45,69 @@ body {
 .radar {
   height: 75%;
   border-radius: 25px;
-  background: rgba(255,255,255,0.15);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,120,255,0.35),
+      rgba(0,0,80,0.45)
+    );
   backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 22px;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.9);
+  overflow: hidden;
+  position: relative;
+}
+
+
+.radar::before {
+  content: "";
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.08),
+      rgba(255,255,255,0.08) 2px,
+      transparent 2px,
+      transparent 12px
+    );
+  animation: mouvementRadar 8s linear infinite;
+}
+
+
+.radar > div {
+  position: relative;
+  z-index: 1;
+}
+
+
+.titre-radar {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+
+.contenu-radar {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+
+@keyframes mouvementRadar {
+
+from {
+  transform: rotate(0deg);
+}
+
+to {
+  transform: rotate(360deg);
+}
+
 }
 
 
