@@ -3,152 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Station météo Francazal</title>
 
 <style>
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   font-family: Arial, sans-serif;
-  background: #101820;
   color: white;
+  background: linear-gradient(
+    180deg,
+    #4facfe 0%,
+    #00f2fe 100%
+  );
+}
+
+
+/* Conteneur principal */
+
+.station {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+
+/* Zones réservées aux futurs radars */
+
+.radar {
+  height: 75%;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  font-size: 22px;
+  color: rgba(255,255,255,0.8);
 }
 
-.station {
-  width: 90%;
-  max-width: 600px;
+
+/* Partie centrale */
+
+.centre {
   text-align: center;
 }
 
+
 h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
+  font-size: 42px;
+  margin: 0 0 20px 0;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.3);
 }
+
 
 .temperature {
-  font-size: 90px;
+  font-size: 120px;
   font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.info {
+
+/* Cartes météo */
+
+.informations {
+  margin-top: 40px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 20px;
 }
+
 
 .carte {
-  background: #1c2b36;
-  border-radius: 15px;
-  padding: 20px;
-  font-size: 22px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  font-size: 28px;
 }
+
 
 .label {
-  font-size: 16px;
-  color: #b0bec5;
+  font-size: 18px;
+  opacity: 0.8;
+  margin-bottom: 10px;
 }
 
+
+/* Mise à jour */
+
 .maj {
-  margin-top: 25px;
-  font-size: 16px;
-  color: #b0bec5;
+  margin-top: 30px;
+  font-size: 18px;
+  opacity: 0.8;
 }
+
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="station">
 
-<h1>Station météo Francazal</h1>
 
-<div class="temperature" id="temperature">-- °C</div>
+<div class="radar">
+Radar pluie
+</div>
 
-<div class="info">
+
+
+<div class="centre">
+
+<h1>
+Station météo Francazal
+</h1>
+
+
+<div class="temperature" id="temperature">
+-- °C
+</div>
+
+
+<div class="informations">
+
 
 <div class="carte">
-<div class="label">Pression</div>
-<div id="pression">-- hPa</div>
+<div class="label">
+Pression
 </div>
+<div id="pression">
+-- hPa
+</div>
+</div>
+
+
 
 <div class="carte">
-<div class="label">Humidité</div>
-<div id="humidite">-- %</div>
+<div class="label">
+Humidité
 </div>
+<div id="humidite">
+-- %
+</div>
+</div>
+
+
 
 <div class="carte">
-<div class="label">Vent</div>
-<div id="vent">-- km/h</div>
+<div class="label">
+Vent
 </div>
+<div id="vent">
+-- km/h
+</div>
+</div>
+
+
 
 <div class="carte">
-<div class="label">Direction</div>
-<div id="direction">--</div>
+<div class="label">
+Direction
+</div>
+<div id="direction">
+--
+</div>
 </div>
 
+
 </div>
+
 
 <div class="maj" id="maj">
 Dernière mise à jour : --
 </div>
 
+
 </div>
 
 
+
+<div class="radar">
+Radar vent
+</div>
+
+
+
+</div>
+<!-- Zone d'alerte météo future -->
+
+<div id="alerte" class="alerte">
+</div>
+
+
+<style>
+
+.alerte {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  background: rgba(255,0,0,0.85);
+  display: none;
+  z-index: 10;
+  animation: clignote 1s infinite;
+}
+
+
+@keyframes clignote {
+
+0% {
+  opacity: 1;
+}
+
+50% {
+  opacity: 0.4;
+}
+
+100% {
+  opacity: 1;
+}
+
+}
+
+
+
+/* Préparation des fonds météo */
+
+.meteo-soleil {
+
+background:
+linear-gradient(
+180deg,
+#56ccf2,
+#2f80ed
+);
+
+}
+
+
+
+.meteo-nuage {
+
+background:
+linear-gradient(
+180deg,
+#757f9a,
+#d7dde8
+);
+
+}
+
+
+
+.meteo-pluie {
+
+background:
+linear-gradient(
+180deg,
+#485563,
+#29323c
+);
+
+}
+
+
+
+.meteo-orage {
+
+background:
+linear-gradient(
+180deg,
+#141e30,
+#243b55
+);
+
+}
+
+
+
+</style>
 <script>
 
 const url = "https://script.google.com/macros/s/AKfycbz6al08GPfgg99-xR18yNuG3wQ6kmABbMEJ7lhrld1g1JJUilkkYxrB3ry30UfQhn31Nw/exec";
 
 
+function changerFondMeteo(humidite) {
+
+let corps = document.body;
+
+corps.classList.remove(
+"meteo-soleil",
+"meteo-nuage",
+"meteo-pluie",
+"meteo-orage"
+);
+
+
+if (humidite > 85) {
+
+corps.classList.add("meteo-pluie");
+
+}
+
+else if (humidite > 70) {
+
+corps.classList.add("meteo-nuage");
+
+}
+
+else {
+
+corps.classList.add("meteo-soleil");
+
+}
+
+}
+
+
+
+function chargerMeteo() {
+
+
 fetch(url)
+
 .then(response => response.json())
+
 .then(data => {
 
-document.getElementById("temperature").innerHTML = data.temperature + " °C";
 
-document.getElementById("pression").innerHTML = Number(data.pression).toFixed(1) + " hPa";
+document.getElementById("temperature").innerHTML =
+data.temperature + " °C";
 
-document.getElementById("humidite").innerHTML = data.humidite + " %";
 
-document.getElementById("vent").innerHTML = Math.round(data.vent) + " km/h";
+document.getElementById("pression").innerHTML =
+Number(data.pression).toFixed(1) + " hPa";
+
+
+document.getElementById("humidite").innerHTML =
+data.humidite + " %";
+
+
+document.getElementById("vent").innerHTML =
+Math.round(data.vent) + " km/h";
+
 
 
 let degres = Math.round(data.direction);
+
 let directionTexte = "";
 
+
 if (degres >= 337.5 || degres < 22.5) {
-  directionTexte = "Nord";
-} else if (degres < 67.5) {
-  directionTexte = "Nord-Est";
-} else if (degres < 112.5) {
-  directionTexte = "Est";
-} else if (degres < 157.5) {
-  directionTexte = "Sud-Est";
-} else if (degres < 202.5) {
-  directionTexte = "Sud";
-} else if (degres < 247.5) {
-  directionTexte = "Sud-Ouest";
-} else if (degres < 292.5) {
-  directionTexte = "Ouest";
-} else {
-  directionTexte = "Nord-Ouest";
+
+directionTexte = "Nord";
+
 }
+
+else if (degres < 67.5) {
+
+directionTexte = "Nord-Est";
+
+}
+
+else if (degres < 112.5) {
+
+directionTexte = "Est";
+
+}
+
+else if (degres < 157.5) {
+
+directionTexte = "Sud-Est";
+
+}
+
+else if (degres < 202.5) {
+
+directionTexte = "Sud";
+
+}
+
+else if (degres < 247.5) {
+
+directionTexte = "Sud-Ouest";
+
+}
+
+else if (degres < 292.5) {
+
+directionTexte = "Ouest";
+
+}
+
+else {
+
+directionTexte = "Nord-Ouest";
+
+}
+
+
 
 document.getElementById("direction").innerHTML =
 "↗ " + degres + "° (" + directionTexte + ")";
 
 
+
 document.getElementById("maj").innerHTML =
 "Dernière mise à jour : " + data.miseAJour;
 
+
+
+changerFondMeteo(data.humidite);
+
+
+})
+
+
+.catch(error => {
+
+console.log("Erreur météo :", error);
+
 });
 
+
+}
+
+
+
+chargerMeteo();
+
+
+setInterval(chargerMeteo, 900000);
+
+
 </script>
+
 
 </body>
 </html>
