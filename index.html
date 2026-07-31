@@ -40,7 +40,7 @@ body {
 }
 
 
-/* Zones réservées aux futurs radars */
+/* Fenêtres radar */
 
 .radar {
   height: 75%;
@@ -52,15 +52,39 @@ body {
       rgba(0,0,80,0.45)
     );
   backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
-  color: rgba(255,255,255,0.9);
   overflow: hidden;
   position: relative;
 }
 
+
+/* Fenêtre intégration MétéoCiel */
+
+#radar-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+
+#meteocielRadar {
+  position: absolute;
+
+  /*
+  Ces valeurs seront ajustées après
+  pour cadrer uniquement le radar.
+  */
+
+  top: -120px;
+  left: -250px;
+
+  width: 1600px;
+  height: 1200px;
+
+  border: none;
+}
+
+
+/* Petite décoration en attendant */
 
 .radar::before {
   content: "";
@@ -76,25 +100,7 @@ body {
       transparent 12px
     );
   animation: mouvementRadar 8s linear infinite;
-}
-
-
-.radar > div {
-  position: relative;
-  z-index: 1;
-}
-
-
-.titre-radar {
-  font-size: 26px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-
-.contenu-radar {
-  font-size: 18px;
-  opacity: 0.8;
+  pointer-events: none;
 }
 
 
@@ -167,7 +173,6 @@ h1 {
   opacity: 0.8;
 }
 
-
 </style>
 
 </head>
@@ -179,18 +184,24 @@ h1 {
 <div class="station">
 
 
+<!-- Radar pluie MétéoCiel -->
+
 <div class="radar">
-    <div class="titre-radar">🌧️ Radar pluie</div>
 
     <div id="radar-frame">
+
         <iframe
             id="meteocielRadar"
-            src="https://www.meteociel.fr/observations-meteo/radarzoom.php?x=4619.51&y=8107.37&ech=4&zoom=2"
-            loading="lazy">
+            src="https://www.meteociel.fr/observations-meteo/radarzoom.php?x=4619.51&y=8107.37&ech=4&zoom=2">
         </iframe>
+
     </div>
+
 </div>
 
+
+
+<!-- Partie centrale -->
 
 <div class="centre">
 
@@ -204,53 +215,67 @@ Station météo Francazal
 </div>
 
 
+
 <div class="informations">
 
 
 <div class="carte">
+
 <div class="label">
 Pression
 </div>
+
 <div id="pression">
 -- hPa
 </div>
+
 </div>
 
 
 
 <div class="carte">
+
 <div class="label">
 Humidité
 </div>
+
 <div id="humidite">
 -- %
 </div>
+
 </div>
 
 
 
 <div class="carte">
+
 <div class="label">
 Vent
 </div>
+
 <div id="vent">
 -- km/h
 </div>
+
 </div>
 
 
 
 <div class="carte">
+
 <div class="label">
 Direction
 </div>
+
 <div id="direction">
 --
 </div>
+
 </div>
 
 
 </div>
+
 
 
 <div class="maj" id="maj">
@@ -262,54 +287,66 @@ Dernière mise à jour : --
 
 
 
+
+
+<!-- Radar vent (préparation future) -->
+
 <div class="radar">
-  <div>
-    <div class="titre-radar">💨 Radar vent</div>
-    <div class="contenu-radar">Chargement du radar...</div>
-  </div>
+
+    <div id="radar-frame-vent">
+
+    </div>
+
+</div>
+
+
+
+
+
 </div>
 
 
 
-</div>
-<!-- Zone d'alerte météo future -->
+<!-- Zone d'alerte météo -->
 
 <div id="alerte" class="alerte">
 </div>
 
-#radar-frame{
-    position:relative;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-}
 
-#meteocielRadar{
-    position:absolute;
-    top:-120px;
-    left:-250px;
-    width:1600px;
-    height:1200px;
-    border:none;
-}
+
 <style>
 
+
 .alerte {
+
   position: fixed;
   top: 20px;
   left: 50%;
+
   transform: translateX(-50%);
+
   width: 80%;
+
   padding: 20px;
+
   border-radius: 20px;
+
   text-align: center;
+
   font-size: 32px;
+
   font-weight: bold;
+
   background: rgba(255,0,0,0.85);
+
   display: none;
+
   z-index: 10;
+
   animation: clignote 1s infinite;
+
 }
+
 
 
 @keyframes clignote {
@@ -326,11 +363,12 @@ Dernière mise à jour : --
   opacity: 1;
 }
 
+
 }
 
 
 
-/* Préparation des fonds météo */
+/* Fonds météo */
 
 .meteo-soleil {
 
@@ -385,14 +423,17 @@ linear-gradient(
 
 
 </style>
+
 <script>
 
 const url = "https://script.google.com/macros/s/AKfycbz6al08GPfgg99-xR18yNuG3wQ6kmABbMEJ7lhrld1g1JJUilkkYxrB3ry30UfQhn31Nw/exec";
 
 
+
 function changerFondMeteo(humidite) {
 
 let corps = document.body;
+
 
 corps.classList.remove(
 "meteo-soleil",
@@ -400,6 +441,7 @@ corps.classList.remove(
 "meteo-pluie",
 "meteo-orage"
 );
+
 
 
 if (humidite > 85) {
@@ -420,7 +462,10 @@ corps.classList.add("meteo-soleil");
 
 }
 
+
 }
+
+
 
 
 
@@ -434,16 +479,20 @@ fetch(url)
 .then(data => {
 
 
+
 document.getElementById("temperature").innerHTML =
 data.temperature + " °C";
+
 
 
 document.getElementById("pression").innerHTML =
 Number(data.pression).toFixed(1) + " hPa";
 
 
+
 document.getElementById("humidite").innerHTML =
 data.humidite + " %";
+
 
 
 document.getElementById("vent").innerHTML =
@@ -451,9 +500,13 @@ Math.round(data.vent) + " km/h";
 
 
 
+
+
 let degres = Math.round(data.direction);
 
+
 let directionTexte = "";
+
 
 
 if (degres >= 337.5 || degres < 22.5) {
@@ -506,8 +559,12 @@ directionTexte = "Nord-Ouest";
 
 
 
+
+
 document.getElementById("direction").innerHTML =
 "↗ " + degres + "° (" + directionTexte + ")";
+
+
 
 
 
@@ -516,7 +573,9 @@ document.getElementById("maj").innerHTML =
 
 
 
+
 changerFondMeteo(data.humidite);
+
 
 
 })
@@ -533,14 +592,19 @@ console.log("Erreur météo :", error);
 
 
 
+
+
 chargerMeteo();
 
 
+
 setInterval(chargerMeteo, 900000);
+
 
 
 </script>
 
 
 </body>
+
 </html>
