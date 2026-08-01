@@ -57,23 +57,25 @@ body {
 }
 
 
-/* Fenêtre intégration MétéoCiel */
+/* Cadre radar pluie */
 
-#radar-frame{
-    position:relative;
-    width:100%;
-    height:100%;
-    overflow:auto;
+#radar-frame,
+#radar-frame-vent {
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
 }
 
 
-#meteocielRadar {
-  position: absolute;
 
-  /*
-  Ces valeurs seront ajustées après
-  pour cadrer uniquement le radar.
-  */
+/* Fenêtre MétéoCiel pluie */
+
+#meteocielRadar {
+
+  position: absolute;
 
   top: -120px;
   left: -250px;
@@ -82,16 +84,40 @@ body {
   height: 1200px;
 
   border: none;
+
 }
 
 
-/* Petite décoration en attendant */
+
+/* Fenêtre MétéoCiel vent */
+
+#meteocielVent {
+
+  position: absolute;
+
+  top: -120px;
+  left: -250px;
+
+  width: 1600px;
+  height: 1200px;
+
+  border: none;
+
+}
+
+
+
+/* Décoration légère */
 
 .radar::before {
+
   content: "";
+
   position: absolute;
+
   width: 160%;
   height: 160%;
+
   background:
     repeating-linear-gradient(
       45deg,
@@ -100,8 +126,11 @@ body {
       transparent 2px,
       transparent 12px
     );
+
   animation: mouvementRadar 8s linear infinite;
+
   pointer-events: none;
+
 }
 
 
@@ -121,60 +150,93 @@ to {
 /* Partie centrale */
 
 .centre {
+
   text-align: center;
+
 }
 
 
 h1 {
+
   font-size: 42px;
+
   margin: 0 0 20px 0;
-  text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+
+  text-shadow:
+  0 3px 10px rgba(0,0,0,0.3);
+
 }
 
 
 .temperature {
+
   font-size: 120px;
+
   font-weight: bold;
+
   line-height: 1;
-  text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+  text-shadow:
+  0 5px 15px rgba(0,0,0,0.3);
+
 }
 
 
 /* Cartes météo */
 
 .informations {
+
   margin-top: 40px;
+
   display: grid;
+
   grid-template-columns: 1fr 1fr;
+
   gap: 20px;
+
 }
 
 
 .carte {
-  background: rgba(255,255,255,0.18);
+
+  background:
+  rgba(255,255,255,0.18);
+
   backdrop-filter: blur(10px);
+
   border-radius: 20px;
+
   padding: 25px;
+
   font-size: 28px;
+
 }
 
 
 .label {
+
   font-size: 18px;
+
   opacity: 0.8;
+
   margin-bottom: 10px;
+
 }
 
 
 /* Mise à jour */
 
 .maj {
+
   margin-top: 30px;
+
   font-size: 18px;
+
   opacity: 0.8;
+
 }
 
-</style>
+  </style>
 
 </head>
 
@@ -290,11 +352,16 @@ Dernière mise à jour : --
 
 
 
-<!-- Radar vent (préparation future) -->
+<!-- Radar vent MétéoCiel -->
 
 <div class="radar">
 
     <div id="radar-frame-vent">
+
+        <iframe
+            id="meteocielVent"
+            src="https://www.meteociel.fr/observations-meteo/vent-rafales.php?region=so&mode=0">
+        </iframe>
 
     </div>
 
@@ -308,7 +375,7 @@ Dernière mise à jour : --
 
 
 
-<!-- Zone d'alerte météo -->
+<!-- Zone d'alerte météo future -->
 
 <div id="alerte" class="alerte">
 </div>
@@ -321,7 +388,9 @@ Dernière mise à jour : --
 .alerte {
 
   position: fixed;
+
   top: 20px;
+
   left: 50%;
 
   transform: translateX(-50%);
@@ -338,7 +407,8 @@ Dernière mise à jour : --
 
   font-weight: bold;
 
-  background: rgba(255,0,0,0.85);
+  background:
+  rgba(255,0,0,0.85);
 
   display: none;
 
@@ -353,17 +423,22 @@ Dernière mise à jour : --
 @keyframes clignote {
 
 0% {
-  opacity: 1;
+
+opacity: 1;
+
 }
 
 50% {
-  opacity: 0.4;
+
+opacity: 0.4;
+
 }
 
 100% {
-  opacity: 1;
-}
 
+opacity: 1;
+
+}
 
 }
 
@@ -425,13 +500,16 @@ linear-gradient(
 
 </style>
 
+
 <script>
+
 
 const url = "https://script.google.com/macros/s/AKfycbz6al08GPfgg99-xR18yNuG3wQ6kmABbMEJ7lhrld1g1JJUilkkYxrB3ry30UfQhn31Nw/exec";
 
 
 
 function changerFondMeteo(humidite) {
+
 
 let corps = document.body;
 
@@ -468,8 +546,6 @@ corps.classList.add("meteo-soleil");
 
 
 
-
-
 function chargerMeteo() {
 
 
@@ -500,14 +576,10 @@ document.getElementById("vent").innerHTML =
 Math.round(data.vent) + " km/h";
 
 
-
-
-
 let degres = Math.round(data.direction);
 
 
 let directionTexte = "";
-
 
 
 if (degres >= 337.5 || degres < 22.5) {
@@ -560,18 +632,13 @@ directionTexte = "Nord-Ouest";
 
 
 
-
-
 document.getElementById("direction").innerHTML =
 "↗ " + degres + "° (" + directionTexte + ")";
 
 
 
-
-
 document.getElementById("maj").innerHTML =
 "Dernière mise à jour : " + data.miseAJour;
-
 
 
 
@@ -600,6 +667,23 @@ chargerMeteo();
 
 
 setInterval(chargerMeteo, 900000);
+
+
+
+// Rafraîchissement automatique du radar vent MétéoCiel
+// toutes les heures (la page vent ne possède pas de lecture automatique)
+
+setInterval(() => {
+
+const vent = document.getElementById("meteocielVent");
+
+if (vent) {
+
+vent.src = vent.src;
+
+}
+
+}, 3600000);
 
 
 
