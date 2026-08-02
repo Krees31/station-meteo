@@ -217,7 +217,48 @@ h1 {
   opacity: 0.8;
 
 }
+/* Rose des vents */
 
+.boussole {
+  width: 90px;
+  height: 90px;
+  border: 3px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+  margin: auto;
+  position: relative;
+}
+
+.boussole::before {
+  content: "N";
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.fleche-vent {
+  position: absolute;
+  width: 4px;
+  height: 38px;
+  background: white;
+  left: 50%;
+  top: 12px;
+  transform-origin: 50% 33px;
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.fleche-vent::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: -6px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 12px solid white;
+}
+  
   </style>
 
 </head>
@@ -309,11 +350,23 @@ Vent
 <div class="carte">
 
 <div class="label">
-Direction
+Direction du vent
 </div>
 
-<div id="direction">
---
+<div class="rose-des-vents">
+
+  <div class="boussole">
+    <div class="lettre nord">N</div>
+    <div class="lettre est">E</div>
+    <div class="lettre sud">S</div>
+    <div class="lettre ouest">O</div>
+
+    <div id="flecheVent" class="fleche">
+      ↑
+    </div>
+
+  </div>
+
 </div>
 
 </div>
