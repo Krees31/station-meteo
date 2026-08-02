@@ -701,8 +701,18 @@ directionTexte = "Nord-Ouest";
 
 
 
+let heureLocale = new Date(data.miseAJour).toLocaleString("fr-FR", {
+  timeZone: "Europe/Paris",
+  hour: "2-digit",
+  minute: "2-digit",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+});
+
+
 document.getElementById("maj").innerHTML =
-"Dernière mise à jour : " + data.miseAJour;
+"Dernière mise à jour : " + heureLocale;
 
 
 
