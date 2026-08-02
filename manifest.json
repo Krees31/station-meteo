@@ -1,7 +1,7 @@
 {
   "name": "Station météo Francazal",
   "short_name": "Météo Francazal",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "landscape",
   "background_color": "#4facfe",
